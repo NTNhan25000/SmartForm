@@ -1,2 +1,2 @@
 # SmartForm
-n.g.u (never give up)
+N.G.U (never give up)
