@@ -6,16 +6,16 @@
 
 ## Tính năng
 
-| STT | Chức năng | Mức độ ưu tiên |
-|-----|-----------|----------------|
-| 1 | Tạo tài khoản, đăng nhập và quản lý hồ sơ người dùng | Cao |
-| 2 | AI Form Generator: Nhập yêu cầu bằng văn bản, AI tự động tạo bộ khung câu hỏi | Cao |
-| 3 | Trình chỉnh sửa biểu mẫu (Thêm/Sửa/Xóa câu hỏi Trắc nghiệm, Tự luận) | Cao |
-| 4 | Gửi link chia sẻ biểu mẫu và thu thập câu trả lời | Cao |
-| 5 | AI Summary: Tự động tóm tắt câu trả lời tự luận và đưa ra đề xuất hành động | Trung bình |
-| 6 | Thống kê dữ liệu bằng biểu đồ trực quan (Tròn, Cột) cho câu hỏi trắc nghiệm | Trung bình |
-| 7 | Xuất dữ liệu khảo sát ra file Excel / Google Sheets | Trung bình |
-| 8 | Kho biểu mẫu mẫu (Templates) theo chủ đề: Học tập, Sự kiện, Khảo sát ý kiến | Thấp |
+| STT | Chức năng |
+|-----|-----------|
+| 1 | Tạo tài khoản, đăng nhập và quản lý hồ sơ người dùng |
+| 2 | AI Form Generator: Nhập yêu cầu bằng văn bản, AI tự động tạo bộ khung câu hỏi |
+| 3 | Trình chỉnh sửa biểu mẫu (Thêm/Sửa/Xóa câu hỏi Trắc nghiệm, Tự luận) |
+| 4 | Gửi link chia sẻ biểu mẫu và thu thập câu trả lời |
+| 5 | AI Summary: Tự động tóm tắt câu trả lời tự luận và đưa ra đề xuất hành động |
+| 6 | Thống kê dữ liệu bằng biểu đồ trực quan (Tròn, Cột) cho câu hỏi trắc nghiệm |
+| 7 | Xuất dữ liệu khảo sát ra file Excel / Google Sheets |
+| 8 | Kho biểu mẫu mẫu (Templates) theo chủ đề: Học tập, Sự kiện, Khảo sát ý kiến |
 
 ---
 
