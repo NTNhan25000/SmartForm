@@ -20,15 +20,6 @@
 | **Unique Value** | Chỉ có AI Forms kết hợp được 3 yếu tố: (1) Giao diện quen thuộc Google Forms, (2) AI gợi ý thông minh theo ngữ cảnh, (3) Hoàn toàn miễn phí, chạy client-side |
 | **Key Metrics** | Số form tạo / tuần, tỷ lệ user quay lại, % form dùng AI gợi ý, thời gian trung bình tạo 1 form |
 
-### Product Goals (12 tháng)
-
-| # | Goal | Success Metric |
-|---|------|----------------|
-| G1 | Ra mắt MVP trên web | Deploy thành công, 100+ users đầu tiên |
-| G2 | Người dùng tạo form dưới 3 phút | Avg. form creation time < 3 phút |
-| G3 | AI được sử dụng thường xuyên | 60%+ forms sử dụng AI gợi ý |
-| G4 | Nền tảng mở rộng | Hỗ trợ multi-language, template marketplace |
-| G5 | Monetization | Freemium model: free cơ bản, Premium cho team/business |
 
 ---
 
