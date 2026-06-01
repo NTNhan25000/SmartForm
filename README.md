@@ -131,59 +131,6 @@
 
 ---
 
-## 📂 Cấu trúc thư mục
-
-```
-src/
-├── App.tsx                    # Component chính, state management
-├── types.ts                   # TypeScript interfaces & types
-├── index.css                  # Tailwind + custom CSS animations
-├── main.tsx                   # Entry point
-├── utils/
-│   └── cn.ts                  # className utility
-└── components/
-    ├── TopBar.tsx             # Thanh tiêu đề: tabs, undo/redo, menu
-    ├── FormHeader.tsx         # Tiêu đề & mô tả biểu mẫu
-    ├── QuestionCard.tsx       # Card câu hỏi: loại, lựa chọn, hành động
-    ├── Sidebar.tsx            # Thanh công cụ bên phải
-    ├── AIChatBox.tsx          # Chatbox AI Assistant
-    ├── ShareModal.tsx         # Modal chia sẻ: link, email, embed
-    └── ThemePicker.tsx        # Bảng chọn màu chủ đề
-```
-
----
-
-## 🚀 Cài đặt & Chạy
-
-### Yêu cầu
-- **Node.js** >= 18
-- **npm** >= 9
-
-### Cài đặt
-
-```bash
-# Clone repository
-git clone https://github.com/your-username/ai-forms.git
-cd ai-forms
-
-# Cài đặt dependencies
-npm install
-
-# Chạy development server
-npm run dev
-```
-
-### Build production
-
-```bash
-# Build thành 1 file HTML duy nhất
-npm run build
-
-# File output: dist/index.html
-```
-
----
-
 ## 🎯 Cách sử dụng
 
 ### Tạo biểu mẫu cơ bản
