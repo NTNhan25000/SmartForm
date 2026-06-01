@@ -949,7 +949,7 @@ LTV       High — likely to become Premium user if analytics good
               ┌─────────┬──────────┬──────────┬──────────┐
          Low  │ R-11    │ R-10     │ R-07     │          │
               │ Dark    │ Template │ Mobile   │          │
-              │ mode    │ quality │ issues   │          │
+              │ mode    │ quality  │ issues   │          │
               ├─────────┼──────────┼──────────┼──────────┤
    Like-  Med │ R-12    │ R-08     │ R-05     │ R-02     │
    lihood     │ Font    │ Feature  │ AI API   │ Google   │
@@ -995,7 +995,7 @@ LTV       High — likely to become Premium user if analytics good
 ║  • Highlight features Google doesn't have                     ║
 ║                                                               ║
 ║  Response Level 2 (within 2 weeks):                           ║
-║  • Launch advanced AI: form analysis, scoring, auto-translate │
+║  • Launch advanced AI: form analysis, scoring, auto-translate ║
 ║  • Push template marketplace                                  ║
 ║  • Partnership with VN education community                    ║
 ║                                                               ║
