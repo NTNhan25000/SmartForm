@@ -1,4 +1,4 @@
-# 📋 AI Forms — Product Documentation
+# 📋 SmartForm — Product Documentation
 
 > **Product Vision · Personas · Scenarios · User Stories · Features · Backlog**
 
@@ -8,7 +8,7 @@
 
 ### Vision Statement
 
-> **"AI Forms là công cụ tạo biểu mẫu trực tuyến thông minh, kết hợp giao diện trực quan kiểu Google Forms với sức mạnh AI, giúp bất kỳ ai cũng có thể tạo form chuyên nghiệp chỉ trong vài phút — không cần kỹ thuật, không cần thiết kế."**
+> **"SmartForm là công cụ tạo biểu mẫu trực tuyến thông minh, kết hợp giao diện trực quan kiểu Google Forms với sức mạnh AI, giúp bất kỳ ai cũng có thể tạo form chuyên nghiệp chỉ trong vài phút — không cần kỹ thuật, không cần thiết kế."**
 
 ### Vision Board
 
