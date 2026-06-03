@@ -153,9 +153,3 @@
 
 ---
 
-## 📜 License
-
-MIT License — thoải mái sử dụng và chỉnh sửa.
-
----
-
