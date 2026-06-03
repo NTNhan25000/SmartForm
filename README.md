@@ -159,8 +159,3 @@ MIT License — thoải mái sử dụng và chỉnh sửa.
 
 ---
 
-<div align="center">
-
-**Được tạo với ❤️ bằng React + TypeScript + Tailwind CSS**
-
-</div>
