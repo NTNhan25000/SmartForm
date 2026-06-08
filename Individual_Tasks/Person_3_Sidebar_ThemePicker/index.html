@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person 3 - Sidebar & Theme Picker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="editor-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Thêm câu hỏi</h3>
+                
+                <div class="question-types">
+                    <button class="question-type-btn" data-type="short">
+                        <span class="type-icon">🅰️</span>
+                        <span class="type-label">Trả lời ngắn</span>
+                    </button>
+                    <button class="question-type-btn" data-type="paragraph">
+                        <span class="type-icon">📝</span>
+                        <span class="type-label">Đoạn văn</span>
+                    </button>
+                    <button class="question-type-btn" data-type="multiple">
+                        <span class="type-icon">⭕</span>
+                        <span class="type-label">Lựa chọn nhiều</span>
+                    </button>
+                    <button class="question-type-btn" data-type="checkbox">
+                        <span class="type-icon">☑️</span>
+                        <span class="type-label">Hộp kiểm</span>
+                    </button>
+                    <button class="question-type-btn" data-type="dropdown">
+                        <span class="type-icon">📋</span>
+                        <span class="type-label">Thả xuống</span>
+                    </button>
+                    <button class="question-type-btn" data-type="scale">
+                        <span class="type-icon">📊</span>
+                        <span class="type-label">Thang đo tuyến tính</span>
+                    </button>
+                    <button class="question-type-btn" data-type="date">
+                        <span class="type-icon">📅</span>
+                        <span class="type-label">Ngày</span>
+                    </button>
+                    <button class="question-type-btn" data-type="time">
+                        <span class="type-icon">🕐</span>
+                        <span class="type-label">Giờ</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- THEME PICKER -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Chủ đề màu</h3>
+                
+                <div class="theme-group">
+                    <h4 class="theme-group-label">Màu đơn</h4>
+                    <div class="themes-grid">
+                        <button class="theme-btn theme-btn-active" data-theme="blue" style="--color: #4285f4;">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Xanh dương</span>
+                        </button>
+                        <button class="theme-btn" data-theme="red" style="--color: #ea4335;">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Đỏ</span>
+                        </button>
+                        <button class="theme-btn" data-theme="green" style="--color: #34a853;">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Xanh lá</span>
+                        </button>
+                        <button class="theme-btn" data-theme="yellow" style="--color: #fbbc04;">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Vàng</span>
+                        </button>
+                        <button class="theme-btn" data-theme="purple" style="--color: #9c27b0;">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Tím</span>
+                        </button>
+                        <button class="theme-btn" data-theme="gray" style="--color: #5f6368;">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Xám</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="theme-group">
+                    <h4 class="theme-group-label">Gradient</h4>
+                    <div class="themes-grid">
+                        <button class="theme-btn" data-theme="gradient-sunset" style="--color: linear-gradient(135deg, #ff9966, #ff5e62);">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Hoàng hôn</span>
+                        </button>
+                        <button class="theme-btn" data-theme="gradient-ocean" style="--color: linear-gradient(135deg, #667eea, #764ba2);">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Đại dương</span>
+                        </button>
+                        <button class="theme-btn" data-theme="gradient-forest" style="--color: linear-gradient(135deg, #134e5e, #71b280);">
+                            <div class="theme-preview"></div>
+                            <span class="theme-name">Rừng</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="theme-preview-section">
+                    <h4 class="preview-label">Xem trước</h4>
+                    <div class="form-preview">
+                        <div class="preview-header"></div>
+                        <div class="preview-question"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <div class="content-placeholder">
+                <p>Nội dung form sẽ ở đây</p>
+                <p style="font-size: 12px; color: #999; margin-top: 10px;">
+                    Sidebar sẽ được sử dụng để thêm câu hỏi và chọn theme
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

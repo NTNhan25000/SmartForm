@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person 1 - Layout & Top Bar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="editor-container">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <div class="logo">GG Form</div>
+                <input type="text" class="form-title-input" placeholder="Tiêu đề form không có tiêu đề">
+            </div>
+            
+            <div class="top-bar-center">
+                <span class="current-tab">Chỉnh sửa</span>
+            </div>
+            
+            <div class="top-bar-right">
+                <div class="save-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Đã lưu</span>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-icon" title="Hoàn tác">↶</button>
+                    <button class="btn btn-icon" title="Làm lại">↷</button>
+                    <button class="btn btn-secondary" title="Xem trước">Xem trước</button>
+                    <button class="btn btn-secondary" title="Chia sẻ">Chia sẻ</button>
+                    <button class="btn btn-primary" title="Hoàn thành">Hoàn thành</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="editor-content">
+            <aside class="sidebar">
+                <div class="sidebar-header">Thêm câu hỏi</div>
+                <div class="sidebar-content">
+                    <p>Sidebar sẽ được xử lý bởi Person 3</p>
+                </div>
+            </aside>
+
+            <main class="editor-main">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h1>Form Header sẽ được xử lý bởi Person 2</h1>
+                    </div>
+                    <div class="questions-area">
+                        <p style="color: #999; text-align: center; padding: 40px 20px;">
+                            Vùng câu hỏi sẽ được xử lý bởi Person 2
+                        </p>
+                    </div>
+                </div>
+            </main>
+
+            <div class="ai-chatbox">
+                <div class="chatbox-toggle">
+                    💬
+                </div>
+                <p style="font-size: 12px; color: #999;">
+                    AI Chatbox sẽ được xử lý bởi Person 5
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person 4 - Share Modal & Preview Mode</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- MAIN EDITOR -->
+        <main class="editor-area">
+            <div class="editor-header">
+                <button class="btn btn-secondary" id="previewBtn">👁️ Xem trước</button>
+                <button class="btn btn-secondary" id="shareBtn">📤 Chia sẻ</button>
+            </div>
+            <p class="editor-content-text">Biểu mẫu sẽ ở đây</p>
+        </main>
+
+        <!-- PREVIEW MODE OVERLAY -->
+        <div class="preview-modal" id="previewModal">
+            <div class="preview-container">
+                <div class="preview-header">
+                    <h1>Mẫu khảo sát về sản phẩm</h1>
+                    <p>Vui lòng cho chúng tôi biết ý kiến của bạn</p>
+                </div>
+
+                <form class="preview-form">
+                    <!-- Question 1: Short Answer -->
+                    <div class="form-question">
+                        <label class="question-label">
+                            Bạn tên gì? <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" placeholder="Nhập câu trả lời của bạn">
+                    </div>
+
+                    <!-- Question 2: Multiple Choice -->
+                    <div class="form-question">
+                        <label class="question-label">
+                            Bạn đánh giá sản phẩm này như thế nào? <span class="required">*</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="rating">
+                                <span>Rất tốt</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="rating">
+                                <span>Tốt</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="rating">
+                                <span>Bình thường</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="rating">
+                                <span>Không tốt</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 3: Paragraph -->
+                    <div class="form-question">
+                        <label class="question-label">
+                            Ý kiến của bạn về sản phẩm
+                        </label>
+                        <textarea class="form-input" placeholder="Viết ý kiến của bạn ở đây..."></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Gửi</button>
+                        <button type="button" class="btn btn-secondary" id="closePreviewBtn">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- SHARE MODAL -->
+        <div class="share-modal-overlay" id="shareModalOverlay">
+            <div class="share-modal">
+                <div class="modal-header">
+                    <h2>Chia sẻ biểu mẫu</h2>
+                    <button class="close-btn" id="closeShareBtn">✕</button>
+                </div>
+
+                <div class="modal-tabs">
+                    <button class="tab-btn tab-btn-active" data-tab="link">
+                        🔗 Liên kết
+                    </button>
+                    <button class="tab-btn" data-tab="email">
+                        📧 Email
+                    </button>
+                    <button class="tab-btn" data-tab="embed">
+                        📌 Nhúng
+                    </button>
+                </div>
+
+                <!-- Link Tab -->
+                <div class="tab-content tab-content-active" id="link-tab">
+                    <div class="share-section">
+                        <h3>Liên kết công khai</h3>
+                        <div class="share-input-group">
+                            <input type="text" class="share-input" value="https://form.example.com/survey/abc123" readonly>
+                            <button class="btn-copy" id="copyLinkBtn">📋 Sao chép</button>
+                        </div>
+                        <p class="share-hint">Bất cứ ai có liên kết này đều có thể trả lời biểu mẫu</p>
+                    </div>
+                </div>
+
+                <!-- Email Tab -->
+                <div class="tab-content" id="email-tab">
+                    <div class="share-section">
+                        <h3>Gửi qua Email</h3>
+                        <div class="share-input-group">
+                            <input type="email" class="share-input" placeholder="Email người nhận">
+                            <button class="btn-send" id="sendEmailBtn">📤 Gửi</button>
+                        </div>
+                        <p class="share-hint">Người nhận sẽ nhận được email với liên kết biểu mẫu</p>
+                    </div>
+                </div>
+
+                <!-- Embed Tab -->
+                <div class="tab-content" id="embed-tab">
+                    <div class="share-section">
+                        <h3>Nhúng vào trang web</h3>
+                        <div class="share-input-group">
+                            <textarea class="share-input" readonly style="min-height: 100px;">&lt;iframe src="https://form.example.com/survey/abc123" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0"&gt;Loading...&lt;/iframe&gt;</textarea>
+                            <button class="btn-copy" id="copyEmbedBtn">📋 Sao chép</button>
+                        </div>
+                        <p class="share-hint">Dán đoạn mã này vào HTML của trang web bạn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBMISSION CONFIRMATION -->
+        <div class="confirmation-modal" id="confirmationModal">
+            <div class="confirmation-container">
+                <div class="confirmation-icon">✅</div>
+                <h2>Phản hồi của bạn đã được ghi nhận</h2>
+                <p>Cảm ơn bạn đã hoàn thành khảo sát. Ý kiến của bạn rất quý báu với chúng tôi.</p>
+                <button class="btn btn-primary" id="confirmationCloseBtn">Quay lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

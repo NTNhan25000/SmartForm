@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person 2 - Form Header & Question Card</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="editor-container">
+        <div class="editor-main">
+            <main class="form-editor">
+                <!-- Form Header Section -->
+                <section class="form-header">
+                    <input type="text" class="form-title" placeholder="Tiêu đề biểu mẫu không có tiêu đề" value="Tiêu đề biểu mẫu">
+                    <textarea class="form-description" placeholder="Mô tả biểu mẫu">Mô tả biểu mẫu của bạn ở đây</textarea>
+                </section>
+
+                <!-- Questions Area -->
+                <section class="questions-container">
+                    <!-- Question Card 1 -->
+                    <div class="question-card question-card-active">
+                        <div class="question-header">
+                            <input type="text" class="question-text" placeholder="Nhập câu hỏi của bạn" value="Câu hỏi 1">
+                        </div>
+                        <div class="question-content">
+                            <div class="question-type-display">
+                                <span class="type-badge">Trả lời ngắn</span>
+                            </div>
+                            <input type="text" class="question-preview" placeholder="Trả lời ngắn">
+                        </div>
+                        <div class="question-footer">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="required-checkbox">
+                                <span>Bắt buộc</span>
+                            </label>
+                            <div class="question-actions">
+                                <button class="action-btn" title="Sao chép">📋</button>
+                                <button class="action-btn" title="Xóa">🗑️</button>
+                                <button class="action-btn menu-btn" title="Menu">⋮</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Card 2 -->
+                    <div class="question-card">
+                        <div class="question-header">
+                            <input type="text" class="question-text" placeholder="Nhập câu hỏi của bạn" value="Câu hỏi 2 - Lựa chọn nhiều">
+                        </div>
+                        <div class="question-content">
+                            <div class="question-type-display">
+                                <span class="type-badge">Lựa chọn nhiều</span>
+                            </div>
+                            <div class="options-preview">
+                                <label class="radio-label">
+                                    <input type="radio">
+                                    <span>Tùy chọn 1</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio">
+                                    <span>Tùy chọn 2</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="question-footer">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="required-checkbox">
+                                <span>Bắt buộc</span>
+                            </label>
+                            <div class="question-actions">
+                                <button class="action-btn" title="Sao chép">📋</button>
+                                <button class="action-btn" title="Xóa">🗑️</button>
+                                <button class="action-btn menu-btn" title="Menu">⋮</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Card 3 -->
+                    <div class="question-card">
+                        <div class="question-header">
+                            <input type="text" class="question-text" placeholder="Nhập câu hỏi của bạn" value="Câu hỏi 3 - Đoạn văn">
+                        </div>
+                        <div class="question-content">
+                            <div class="question-type-display">
+                                <span class="type-badge">Đoạn văn</span>
+                            </div>
+                            <textarea class="question-preview" placeholder="Trả lời dài..."></textarea>
+                        </div>
+                        <div class="question-footer">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="required-checkbox">
+                                <span>Bắt buộc</span>
+                            </label>
+                            <div class="question-actions">
+                                <button class="action-btn" title="Sao chép">📋</button>
+                                <button class="action-btn" title="Xóa">🗑️</button>
+                                <button class="action-btn menu-btn" title="Menu">⋮</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Question Button -->
+                <div class="add-question-section">
+                    <button class="btn-add-question">+ Thêm câu hỏi</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
