@@ -10,6 +10,33 @@
 - Mỗi folder có thể mở và chạy độc lập.
 - Có một trang `demo` mô phỏng khung giao diện sau khi ghép 5 phần lại với nhau.
 
+## Kiến trúc
+
+Dự án được tổ chức theo hướng chia nhỏ giao diện thành các module độc lập. Mỗi thành viên phụ trách một khu vực chức năng riêng như layout, form editor, sidebar, preview, share modal hoặc AI chatbox. Cách chia này giúp từng phần có thể phát triển, kiểm thử và chỉnh sửa riêng trước khi ghép vào bản demo tổng thể.
+
+Kiến trúc chính gồm ba lớp:
+
+- **HTML**: xây dựng cấu trúc nội dung cho từng vùng giao diện, ví dụ top bar, form header, question card, sidebar, modal và chatbox.
+- **CSS**: định nghĩa bố cục, màu sắc, khoảng cách, trạng thái hover/focus, responsive và phong cách hiển thị thống nhất giữa các phần.
+- **JavaScript**: xử lý các tương tác cơ bản như thêm câu hỏi, sao chép, xóa, mở modal, đổi theme, preview form và hiển thị thông báo.
+
+Folder `demo` đóng vai trò là bản tích hợp, mô phỏng cách các phần riêng lẻ hoạt động cùng nhau trong một màn hình chỉnh sửa biểu mẫu hoàn chỉnh. Các folder `Person_*` vẫn giữ tính độc lập để dễ phân công, trình bày và bảo trì.
+
+## Giao diện
+
+Giao diện được thiết kế theo phong cách trình chỉnh sửa biểu mẫu hiện đại, lấy cảm hứng từ Google Forms nhưng được chia thành các khối rõ ràng để dễ thao tác. Màn hình chính tập trung vào vùng soạn form, nơi người dùng có thể nhập tiêu đề, mô tả, tạo câu hỏi và chọn kiểu trả lời.
+
+Các thành phần giao diện chính gồm:
+
+- **Top bar**: hiển thị tên form, trạng thái lưu và các nút hành động nhanh.
+- **Form header**: cho phép nhập tiêu đề và mô tả biểu mẫu.
+- **Question card**: trình bày từng câu hỏi dưới dạng thẻ, có vùng nhập nội dung, kiểu câu hỏi, lựa chọn trả lời, trạng thái bắt buộc và các nút thao tác.
+- **Sidebar và theme picker**: hỗ trợ thêm thành phần mới, đổi màu/chủ đề và xem trước phong cách form.
+- **Preview và share modal**: giúp xem biểu mẫu ở chế độ người trả lời và chia sẻ bằng link hoặc embed.
+- **AI chatbox**: hỗ trợ gợi ý nội dung, tạo câu hỏi nhanh và cải thiện trải nghiệm sử dụng.
+
+Tổng thể giao diện ưu tiên sự rõ ràng, dễ quét thông tin và thao tác nhanh. Các vùng chức năng được tách bằng khoảng trắng, thẻ nội dung và màu nhấn nhẹ để người dùng dễ nhận biết phần đang chỉnh sửa.
+
 ## Cấu trúc thư mục
 
 ```text
