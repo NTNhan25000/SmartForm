@@ -1,9 +1,6 @@
 # Tài Liệu Kiến Trúc Hệ Thống SmartForm
 
-Tài liệu này mô tả chi tiết cấu trúc, vai trò của từng thành phần, công nghệ áp dụng và các luồng dữ liệu vận hành bên trong hệ thống **SmartForm** — một kiến trúc phần mềm hiện đại tích hợp Trí tuệ Nhân tạo và khả năng phản hồi theo thời gian thực (Real-time).
-
 ---
-
 ## 1. Sơ Đồ Kiến Trúc Tổng Quan
 
 Hệ thống được thiết kế theo mô hình phân tầng chuyên biệt (Layered Architecture) gồm 5 lớp chính nhằm đảm bảo tính mở rộng (scalability), khả năng bảo mật và tối ưu hóa chi phí khi vận hành các mô hình ngôn ngữ lớn (LLM).
@@ -59,21 +56,21 @@ Cách các thành phần giao tiếp với nhau được thể hiện qua các h
 ![Diagram](DIAGRAM.png)
 
 
-### 1. Mũi tên Tím & Xanh dương dọc (Frontend ↔ Backend)
+### 1. Frontend ↔ Backend
 * **Chiều xuống (HTTPS / REST API):** Frontend gửi các yêu cầu tương tác hoặc dữ liệu biểu mẫu do người dùng nhập xuống Backend.
 * **Chiều lên (JSON Streaming / WSS):** Backend truyền dữ liệu kết quả ngược lại cho Frontend. Việc áp dụng giao thức WebSocket (WSS) và cơ chế Stream giúp dữ liệu được đẩy về liên tục theo thời gian thực mà không bắt người dùng phải chờ đợi tải toàn bộ trang.
 
-### 2. Mũi tên Đỏ vẽ tay (Backend → AI Orchestration)
+### 2. Backend → AI Orchestration
 * **Ý nghĩa:** Thể hiện luồng kích hoạt tiến trình AI. Sau khi Core Service hoàn tất các xác thực nghiệp vụ cơ bản, nó sẽ phát lệnh và chuyển giao dữ liệu sang cho tầng điều phối AI để bắt đầu quy trình xử lý thông minh.
 
-### 3. Mũi tên Xanh lá dọc (AI Orchestration ↔ Lớp Mô Hình LLM)
+### 3. AI Orchestration ↔ Lớp Mô Hình LLM
 * **Chiều xuống:** Tầng Orchestration thực hiện các lệnh gọi API (API Calls) kèm theo Prompts đã được tối ưu hóa xuống các mô hình LLM.
 * **Chiều lên:** Các mô hình LLM trả kết quả phân tích về. Kết quả này được ràng buộc nghiêm ngặt dưới dạng **Structured Output** để tầng điều phối dễ dàng bóc tách dữ liệu.
 
-### 4. Mũi tên Xanh dương chuyển Xanh lá hình chữ L (Backend ↔ Database)
+### 4. Backend ↔ Database
 * **Ý nghĩa:** Đây là luồng tương tác cơ sở dữ liệu truyền thống (**OLTP - Online Transaction Processing**).
 * **Chức năng:** Core Service trực tiếp đọc/ghi các dữ liệu mang tính cấu trúc và hành chính như thông tin tài khoản, cấu hình form, phân quyền người dùng và quản lý trạng thái của hệ thống. Đảm bảo tính toàn vẹn và nhất quán của dữ liệu.
 
-### 5. Mũi tên ngang chuyển màu (AI Orchestration → Database)
+### 5. AI Orchestration → Database
 * **Ý nghĩa:** Đây là luồng truy xuất dữ liệu phục vụ riêng cho các tác vụ Trí tuệ nhân tạo (Cơ chế **RAG - Retrieval-Augmented Generation**).
 * **Chức năng:** Tầng AI Orchestration (thông qua LlamaIndex/LangChain) sẽ thực hiện truy vấn xuống cơ sở dữ liệu (đặc biệt là Vector Database) để tìm kiếm các tài liệu, biểu mẫu cũ hoặc tri thức doanh nghiệp có liên quan chặt chẽ nhất với câu hỏi hiện tại. Sau đó, nó gom dữ liệu tri thức này lại để "làm giàu ngữ cảnh" cho câu lệnh trước khi gửi xuống cho LLM, giúp AI trả lời chính xác, tránh hiện tượng ảo tưởng thông tin.
