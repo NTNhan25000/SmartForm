@@ -63,7 +63,7 @@ Cách các thành phần giao tiếp với nhau được thể hiện qua các h
 
 ### 2. Backend → AI Orchestration
 * **Ý nghĩa tổng quan:** Thể hiện hành động kích hoạt tiến trình thông minh của hệ thống từ luồng nghiệp vụ thông thường sang luồng xử lý AI.
-* **Chi tiết luồng hai chiều:**
+* **Chi tiết luồng:**
   * **Chiều xuống (Backend → AI Orchestration - Trigger):** Core Service sau khi hoàn tất kiểm tra nghiệp vụ và phân quyền, tiến hành phát lệnh (trigger) và chuyển giao toàn bộ dữ liệu thô (Raw Data) cùng yêu cầu người dùng sang cho tầng điều phối AI.
 
 ### 3. AI Orchestration ↔ Lớp Mô Hình LLM
@@ -84,5 +84,5 @@ Cách các thành phần giao tiếp với nhau được thể hiện qua các h
 
 ### 5. AI Orchestration → Database
 * **Ý nghĩa tổng quan:** Đây là luồng truy xuất dữ liệu phục vụ riêng cho các tác vụ Trí tuệ nhân tạo (Cơ chế **RAG - Retrieval-Augmented Generation**).
-* **Chi tiết luồng hai chiều:**
+* **Chi tiết luồng:**
   * **Chiều qua (AI Orchestration → Database - Content Archival):** Chuyển các dữ liệu đặc thù của AI về lưu trữ trong Database như: lưu lịch sử hội thoại (`Chat Message History`), lưu bộ nhớ đệm (`Prompt Cache`), hoặc lưu trạng thái các bước xử lý của AI Agent (`Agent State`).
