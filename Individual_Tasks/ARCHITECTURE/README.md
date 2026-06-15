@@ -55,22 +55,36 @@ Cách các thành phần giao tiếp với nhau được thể hiện qua các h
 
 ![Diagram](DIAGRAM.png)
 
-
 ### 1. Frontend ↔ Backend
-* **Chiều xuống (HTTPS / REST API):** Frontend gửi các yêu cầu tương tác hoặc dữ liệu biểu mẫu do người dùng nhập xuống Backend.
-* **Chiều lên (JSON Streaming / WSS):** Backend truyền dữ liệu kết quả ngược lại cho Frontend. Việc áp dụng giao thức WebSocket (WSS) và cơ chế Stream giúp dữ liệu được đẩy về liên tục theo thời gian thực mà không bắt người dùng phải chờ đợi tải toàn bộ trang.
+* **Ý nghĩa tổng quan:** Đây là luồng giao tiếp trực tiếp giữa người dùng và hệ thống quản trị, sử dụng giao thức truyền thông mạng chuẩn hóa để tối ưu hóa trải nghiệm thời gian thực.
+* **Chi tiết luồng hai chiều:**
+  * **Chiều xuống (Frontend → Backend - Request):** Frontend gửi các yêu cầu tương tác, dữ liệu đăng nhập hoặc nội dung biểu mẫu do người dùng vừa nhập xuống Backend thông qua giao thức `HTTPS` hoặc `REST API`.
+  * **Chiều lên (Backend → Frontend - Response):** Backend truyền ngược dữ liệu kết quả về cho Frontend thông qua giao thức `WebSockets (WSS)` hoặc cơ chế `JSON Streaming`. Giúp hiển thị nội dung chạy ra liên tục theo thời gian thực (giống như AI đang gõ chữ).
 
 ### 2. Backend → AI Orchestration
-* **Ý nghĩa:** Thể hiện luồng kích hoạt tiến trình AI. Sau khi Core Service hoàn tất các xác thực nghiệp vụ cơ bản, nó sẽ phát lệnh và chuyển giao dữ liệu sang cho tầng điều phối AI để bắt đầu quy trình xử lý thông minh.
+* **Ý nghĩa tổng quan:** Thể hiện hành động kích hoạt tiến trình thông minh của hệ thống từ luồng nghiệp vụ thông thường sang luồng xử lý AI.
+* **Chi tiết luồng hai chiều:**
+  * **Chiều xuống (Backend → AI Orchestration - Trigger):** Core Service sau khi hoàn tất kiểm tra nghiệp vụ và phân quyền, tiến hành phát lệnh (trigger) và chuyển giao toàn bộ dữ liệu thô (Raw Data) cùng yêu cầu người dùng sang cho tầng điều phối AI.
+  * **Chiều lên (AI Orchestration → Backend - Callback/Status):** Tầng điều phối phản hồi lại các trạng thái khởi tạo tác vụ, báo nhận diện hoặc trả dữ liệu đã đóng gói sau khi AI hoàn thành tiến trình xử lý sâu.
 
 ### 3. AI Orchestration ↔ Lớp Mô Hình LLM
-* **Chiều xuống:** Tầng Orchestration thực hiện các lệnh gọi API (API Calls) kèm theo Prompts đã được tối ưu hóa xuống các mô hình LLM.
-* **Chiều lên:** Các mô hình LLM trả kết quả phân tích về. Kết quả này được ràng buộc nghiêm ngặt dưới dạng **Structured Output** để tầng điều phối dễ dàng bóc tách dữ liệu.
+* **Ý nghĩa tổng quan:** Đây là luồng tích hợp mô hình ngôn ngữ lớn (LLM Integration), kết nối trí tuệ nhân tạo gốc với hệ thống quản lý ứng dụng.
+* **Chi tiết luồng hai chiều:**
+  * **Chiều xuống (AI Orchestration → Lớp Mô hình LLM - API Call):** Tầng Orchestration thực hiện các lệnh gọi API (`API Calls`) gửi hệ thống các câu lệnh (`Prompts`) đã được tinh chỉnh, bổ sung đầy đủ ngữ cảnh bộ nhớ sang cho các mô hình AI (Gemini, GPT-4o).
+  * **Chiều lên (Lớp Mô hình LLM → AI Orchestration - Return JSON):** Các mô hình LLM sau khi suy luận xong sẽ trả kết quả phân tích về. Kết quả này bắt buộc phải ép về dạng cấu trúc định sẵn (`Structured Output - JSON`) để hệ thống bóc tách tự động mà không bị lỗi.
 
 ### 4. Backend ↔ Database
-* **Ý nghĩa:** Đây là luồng tương tác cơ sở dữ liệu truyền thống (**OLTP - Online Transaction Processing**).
-* **Chức năng:** Core Service trực tiếp đọc/ghi các dữ liệu mang tính cấu trúc và hành chính như thông tin tài khoản, cấu hình form, phân quyền người dùng và quản lý trạng thái của hệ thống. Đảm bảo tính toàn vẹn và nhất quán của dữ liệu.
+* **Ý nghĩa tổng quan:** Đây là luồng tương tác cơ sở dữ liệu nghiệp vụ truyền thống (**OLTP - Online Transaction Processing**), đảm bảo tính nhất quán và toàn vẹn dữ liệu (ACID) của hệ thống.
+* **Chi tiết luồng hai chiều:**
+  * **Chiều xuống (Backend → Database - Write/Query):** Core Service gửi các câu lệnh (SQL Queries hoặc NoSQL Commands) để thực hiện các thao tác:
+    * **Ghi dữ liệu (Write):** Lưu thông tin tài khoản mới, lưu lịch sử submit biểu mẫu của người dùng, tạo log hệ thống.
+    * **Cập nhật (Update):** Thay đổi trạng thái xử lý của form, cập nhật phân quyền (Roles).
+  * **Chiều lên (Database → Backend - Result Set):** Cơ sở dữ liệu xử lý yêu cầu và trả về kết quả cho Core Service:
+    * **Trả dữ liệu (Read Result):** Trả về thông tin cấu hình form, danh sách biểu mẫu cũ, thông tin xác thực tài khoản (để khớp mật khẩu/token).
+    * **Trạng thái (Status):** Trả về thông báo thao tác Ghi/Cập nhật thành công hoặc thất bại.
 
 ### 5. AI Orchestration → Database
-* **Ý nghĩa:** Đây là luồng truy xuất dữ liệu phục vụ riêng cho các tác vụ Trí tuệ nhân tạo (Cơ chế **RAG - Retrieval-Augmented Generation**).
-* **Chức năng:** Tầng AI Orchestration (thông qua LlamaIndex/LangChain) sẽ thực hiện truy vấn xuống cơ sở dữ liệu (đặc biệt là Vector Database) để tìm kiếm các tài liệu, biểu mẫu cũ hoặc tri thức doanh nghiệp có liên quan chặt chẽ nhất với câu hỏi hiện tại. Sau đó, nó gom dữ liệu tri thức này lại để "làm giàu ngữ cảnh" cho câu lệnh trước khi gửi xuống cho LLM, giúp AI trả lời chính xác, tránh hiện tượng ảo tưởng thông tin.
+* **Ý nghĩa tổng quan:** Đây là luồng truy xuất dữ liệu phục vụ riêng cho các tác vụ Trí tuệ nhân tạo (Cơ chế **RAG - Retrieval-Augmented Generation**).
+* **Chi tiết luồng hai chiều:**
+  * **Chiều qua (AI Orchestration → Database - Context Retrieval):** Tầng AI Orchestration (LangChain/LlamaIndex) gửi các truy vấn ngữ cảnh (thường là so sánh vector tương đồng - `Vector Search`) xuống Database để tìm kiếm các văn bản, quy định hay biểu mẫu mẫu có sẵn liên quan đến prompt của người dùng.
+  * **Chiều về (Database → AI Orchestration - Context Return):** Database trả về các đoạn dữ liệu tri thức phù hợp nhất để tầng Orchestration gom lại, "làm giàu ngữ cảnh" vào Prompt trước khi gửi cho LLM xử lý, giúp ngăn chặn lỗi ảo tưởng thông tin ở AI.
