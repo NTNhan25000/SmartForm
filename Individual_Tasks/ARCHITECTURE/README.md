@@ -65,7 +65,6 @@ Cách các thành phần giao tiếp với nhau được thể hiện qua các h
 * **Ý nghĩa tổng quan:** Thể hiện hành động kích hoạt tiến trình thông minh của hệ thống từ luồng nghiệp vụ thông thường sang luồng xử lý AI.
 * **Chi tiết luồng hai chiều:**
   * **Chiều xuống (Backend → AI Orchestration - Trigger):** Core Service sau khi hoàn tất kiểm tra nghiệp vụ và phân quyền, tiến hành phát lệnh (trigger) và chuyển giao toàn bộ dữ liệu thô (Raw Data) cùng yêu cầu người dùng sang cho tầng điều phối AI.
-  * **Chiều lên (AI Orchestration → Backend - Callback/Status):** Tầng điều phối phản hồi lại các trạng thái khởi tạo tác vụ, báo nhận diện hoặc trả dữ liệu đã đóng gói sau khi AI hoàn thành tiến trình xử lý sâu.
 
 ### 3. AI Orchestration ↔ Lớp Mô Hình LLM
 * **Ý nghĩa tổng quan:** Đây là luồng tích hợp mô hình ngôn ngữ lớn (LLM Integration), kết nối trí tuệ nhân tạo gốc với hệ thống quản lý ứng dụng.
@@ -86,5 +85,4 @@ Cách các thành phần giao tiếp với nhau được thể hiện qua các h
 ### 5. AI Orchestration → Database
 * **Ý nghĩa tổng quan:** Đây là luồng truy xuất dữ liệu phục vụ riêng cho các tác vụ Trí tuệ nhân tạo (Cơ chế **RAG - Retrieval-Augmented Generation**).
 * **Chi tiết luồng hai chiều:**
-  * **Chiều qua (AI Orchestration → Database - Context Retrieval):** Tầng AI Orchestration (LangChain/LlamaIndex) gửi các truy vấn ngữ cảnh (thường là so sánh vector tương đồng - `Vector Search`) xuống Database để tìm kiếm các văn bản, quy định hay biểu mẫu mẫu có sẵn liên quan đến prompt của người dùng.
-  * **Chiều về (Database → AI Orchestration - Context Return):** Database trả về các đoạn dữ liệu tri thức phù hợp nhất để tầng Orchestration gom lại, "làm giàu ngữ cảnh" vào Prompt trước khi gửi cho LLM xử lý, giúp ngăn chặn lỗi ảo tưởng thông tin ở AI.
+  * **Chiều qua (AI Orchestration → Database - Content Archival):** Chuyển các dữ liệu đặc thù của AI về lưu trữ trong Database như: lưu lịch sử hội thoại (`Chat Message History`), lưu bộ nhớ đệm (`Prompt Cache`), hoặc lưu trạng thái các bước xử lý của AI Agent (`Agent State`).
