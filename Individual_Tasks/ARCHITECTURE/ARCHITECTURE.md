@@ -56,15 +56,7 @@ Hệ thống được thiết kế theo mô hình phân tầng chuyên biệt (L
 
 Cách các thành phần giao tiếp với nhau được thể hiện qua các hướng mũi tên trong sơ đồ:
 
-[ Frontend ] <== (WSS / JSON Streaming) ==> [ Backend ]
-||
-|| (Kích hoạt logic AI)
-/
-[ Database ] <==== (Truy vấn tri thức RAG) === [ AI Orchestration ]
-^                                           ||
-||                                          || (Gửi Prompt & Nhận JSON)
-|| (Đọc/Ghi nghiệp vụ OLTP)                 /
-======================================= [ Lớp Mô Hình LLM ]
+![Diagram](DIAGRAM.png)
 
 
 ### 1. Mũi tên Tím & Xanh dương dọc (Frontend ↔ Backend)
