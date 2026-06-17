@@ -4,10 +4,7 @@
 
 ---
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 351d96cd722b11606ac6750da40ac62c3264b903
 ## Phân công
 
 > **Dev A + Dev C** phối hợp thực hiện phần này.
@@ -28,31 +25,17 @@ Lý do kết hợp:
 
 ## Lựa chọn công nghệ
 
-<<<<<<< HEAD
 | Lựa chọn | Phù hợp khi |
 |----------|-------------|
 | **Supabase** | Muốn setup nhanh, có auth + realtime sẵn |
 | **Firebase Firestore** | Ưu tiên realtime sync, quen hệ sinh thái Google |
 | **PocketBase** | Muốn self-hosted, nhẹ, đơn giản |
 | **Custom API (Node.js)** | Cần kiểm soát hoàn toàn logic backend |
-=======
-
-Toàn bộ dữ liệu form được lưu trên trình duyệt của người dùng:
-
-```
-localStorage
-└── "gg-form-draft"   →  JSON của FormState (title, description, questions[], settings, themeColor)
-```
-
-Ưu điểm: offline hoàn toàn, không cần backend, zero latency.
-Giới hạn: mất khi xóa cache, không chia sẻ giữa thiết bị, không lưu lịch sử phản hồi.
->>>>>>> 351d96cd722b11606ac6750da40ac62c3264b903
 
 ---
 
 ## Dữ liệu cần lưu trữ
 
-<<<<<<< HEAD
 ### Tài khoản người dùng
 - ID, tên hiển thị, email, ảnh đại diện
 - Phương thức đăng nhập (Google OAuth / email-password)
@@ -65,9 +48,6 @@ Giới hạn: mất khi xóa cache, không chia sẻ giữa thiết bị, không
 - Trạng thái: đang nhận phản hồi / đã đóng
 - ID chủ sở hữu (liên kết với tài khoản)
 - Cài đặt form (giới hạn phản hồi, thu thập email, thông báo xác nhận...)
-=======
-### Lựa chọn công nghệ gợi ý
->>>>>>> 351d96cd722b11606ac6750da40ac62c3264b903
 
 ### Câu hỏi (Questions)
 - ID câu hỏi, tiêu đề, loại câu hỏi
@@ -94,46 +74,11 @@ users
               └── 1 response có nhiều answers (theo từng question)
 ```
 
-<<<<<<< HEAD
-=======
-### Bảng `responses` *(giai đoạn 2)*
-
-```sql
-CREATE TABLE responses (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  form_id     UUID REFERENCES forms(id) ON DELETE CASCADE,
-  answers     JSONB NOT NULL,  -- { questionId: value }
-  email       TEXT,
-  submitted_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
----
-
-## API Contract nội bộ (`src/services/db.ts`)
-
-```ts
-// Interface thống nhất — Dev A + Dev C cùng định nghĩa
-interface DBAdapter {
-  saveForm(form: FormState): Promise<string>;      // trả về form id
-  loadForm(id: string): Promise<FormState | null>;
-  listForms(): Promise<{ id: string; title: string; updatedAt: string }[]>;
-  deleteForm(id: string): Promise<void>;
-  submitResponse(formId: string, answers: Record<string, unknown>): Promise<void>;
-}
-```
-
-Cả `LocalStorageAdapter` (hiện tại) và `SupabaseAdapter` (mở rộng) đều implement cùng interface này — component không cần biết nguồn dữ liệu đến từ đâu.
-
->>>>>>> 351d96cd722b11606ac6750da40ac62c3264b903
 ---
 
 ## Chiến lược lưu trữ theo giai đoạn
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 351d96cd722b11606ac6750da40ac62c3264b903
 ### Giai đoạn 1 — MVP (hiện tại)
 - Lưu toàn bộ dữ liệu form trên `localStorage` của trình duyệt
 - Không cần tài khoản, không cần mạng, hoạt động offline hoàn toàn
