@@ -4,8 +4,6 @@
 
 ---
 
-![Theme Overview](https://placehold.co/860x200/0ea5a4/white?text=Theme+System+%E2%80%94+12+mau+don+%2B+6+gradient+%2B+Custom+Color+Picker)
-
 ## Vai trò
 
 Hoàn thiện hệ thống theme, đảm bảo khả năng tiếp cận (accessibility), và kiểm tra chất lượng giao diện.
@@ -39,9 +37,6 @@ Hoàn thiện hệ thống theme, đảm bảo khả năng tiếp cận (accessi
 ## Chức năng chính phát triển
 
 ### 🎨 Hệ thống Theme Tokens
-
-![Theme Tokens](https://placehold.co/860x100/f2fbfa/0b8f89?text=--color-accent+%230ea5a4+%7C+--color-cta+%23ff6b35+%7C+--color-border+%23e6eef0)
-
 Toàn bộ màu sắc và khoảng cách được định nghĩa bằng CSS custom properties trong `index.css`, các component chỉ dùng biến — không hardcode giá trị:
 ```css
 /* Ví dụ biến theme */
@@ -53,9 +48,6 @@ Toàn bộ màu sắc và khoảng cách được định nghĩa bằng CSS cust
 Hỗ trợ **18 preset**: 12 màu đơn (Tím, Xanh dương, Xanh lá, Đỏ, Cam, Vàng...) + 6 gradient (Xanh-Tím, Hồng-Đỏ, Ocean, Mint, Hồng-Vàng, Ombre). Khi đổi theme, chỉ cần thay giá trị biến CSS — toàn bộ UI cập nhật tức thì.
 
 ### 🖌 ThemePicker
-
-![ThemePicker](https://placehold.co/860x200/e6eef0/0f1724?text=ThemePicker+%E2%80%94+18+preset+(12+mau+don+%2B+6+gradient)+%2B+Custom+picker)
-
 Component bảng chọn màu gồm:
 - Lưới màu 18 ô (12 đơn sắc + 6 gradient), ô đang chọn có viền highlight
 - **Custom color picker** — input `type="color"` cho phép chọn màu bất kỳ
@@ -71,9 +63,6 @@ Component bảng chọn màu gồm:
 - Các animation: fade-in cho toast, slide-up cho modal, typing dots cho AI
 
 ### ⌨️ Keyboard Navigation & Focus Ring
-
-![Keyboard Nav](https://placehold.co/860x100/fff7ed/ff6b35?text=Tab+Order%3A+TopBar+%E2%86%92+FormHeader+%E2%86%92+QuestionCard%5B%5D+%E2%86%92+Sidebar+%E2%86%92+AIChatBox)
-
 - Mọi button, input, select, link đều có `:focus-visible` ring rõ ràng (không dùng `outline: none`)
 - Thứ tự Tab logic theo luồng đọc: TopBar → FormHeader → QuestionCard[] → Sidebar → AIChatBox
 - Bẫy focus (focus trap) trong modal: `Tab` không thoát ra ngoài modal khi đang mở
