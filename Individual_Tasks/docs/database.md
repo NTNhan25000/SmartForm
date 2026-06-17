@@ -4,7 +4,6 @@
 
 ---
 
-![Database Overview](https://placehold.co/860x220/0f1724/white?text=Storage+Layer%3A+localStorage+(hien+tai)+%E2%86%92+Backend+DB+(mo+rong))
 
 ## Phân công
 
@@ -12,167 +11,127 @@
 
 | Hạng mục | Dev phụ trách |
 |----------|--------------|
-| `src/services/storage.ts` — localStorage, export/import JSON | **Dev A** |
-| `src/services/db.ts` — database adapter (backend API) | **Dev C** |
-| `src/services/sync.ts` — đồng bộ local ↔ remote | **Dev A + Dev C** |
-| Schema thiết kế bảng dữ liệu | **Dev A + Dev C** |
+| Lưu trữ local — localStorage, export/import JSON | **Dev A** |
+| Database adapter — kết nối backend, đồng bộ dữ liệu | **Dev C** |
+| Thiết kế schema bảng & quan hệ dữ liệu | **Dev A + Dev C** |
+| Đồng bộ local ↔ remote | **Dev A + Dev C** |
 
 Lý do kết hợp:
-- **Dev A** nắm toàn bộ `FormState` và biết dữ liệu nào cần persist
-- **Dev C** nắm `services/` layer và pattern async/await cho external calls
-- Cả hai cùng định nghĩa contract để các Dev B, D, E không cần quan tâm đến nguồn dữ liệu
+- **Dev A** nắm toàn bộ `FormState` và biết dữ liệu nào cần lưu
+- **Dev C** nắm services layer và các external calls
+- Cả hai thống nhất schema để Dev B, D, E không cần quan tâm đến tầng dữ liệu
 
 ---
 
-## Hiện trạng — localStorage (MVP)
+## Lựa chọn công nghệ
 
-![LocalStorage Flow](https://placehold.co/860x160/f2fbfa/0b8f89?text=FormState+%E2%86%92+JSON.stringify+%E2%86%92+localStorage+%E2%86%92+JSON.parse+%E2%86%92+FormState)
-
-Toàn bộ dữ liệu form được lưu trên trình duyệt của người dùng:
-
-```
-localStorage
-└── "gg-form-draft"   →  JSON của FormState (title, description, questions[], settings, themeColor)
-```
-
-Ưu điểm: offline hoàn toàn, không cần backend, zero latency.
-Giới hạn: mất khi xóa cache, không chia sẻ giữa thiết bị, không lưu lịch sử phản hồi.
+| Lựa chọn | Phù hợp khi |
+|----------|-------------|
+| **Supabase** | Muốn setup nhanh, có auth + realtime sẵn |
+| **Firebase Firestore** | Ưu tiên realtime sync, quen hệ sinh thái Google |
+| **PocketBase** | Muốn self-hosted, nhẹ, đơn giản |
+| **Custom API (Node.js)** | Cần kiểm soát hoàn toàn logic backend |
 
 ---
 
-## Mở rộng — Database thật (Backend)
+## Dữ liệu cần lưu trữ
 
-![Backend Flow](https://placehold.co/860x200/0ea5a4/white?text=React+App+%E2%86%92+REST+API+%2F+Supabase+%E2%86%92+PostgreSQL)
+### Tài khoản người dùng
+- ID, tên hiển thị, email, ảnh đại diện
+- Phương thức đăng nhập (Google OAuth / email-password)
+- Ngày tạo tài khoản, lần đăng nhập cuối
+- Gói sử dụng (free / pro nếu có)
 
-### Lựa chọn công nghệ gợi ý
+### Biểu mẫu (Forms)
+- ID form, tiêu đề, mô tả, màu theme
+- Ngày tạo, ngày cập nhật cuối
+- Trạng thái: đang nhận phản hồi / đã đóng
+- ID chủ sở hữu (liên kết với tài khoản)
+- Cài đặt form (giới hạn phản hồi, thu thập email, thông báo xác nhận...)
 
-| Lựa chọn | Stack | Phù hợp khi |
-|----------|-------|-------------|
-| **Supabase** | PostgreSQL + REST + Realtime | Muốn setup nhanh, có auth sẵn |
-| **Firebase Firestore** | NoSQL + Realtime | Ưu tiên realtime sync |
-| **PocketBase** | SQLite + REST | Self-hosted, nhẹ |
-| **Custom API** | Node.js + PostgreSQL | Cần kiểm soát hoàn toàn |
+### Câu hỏi (Questions)
+- ID câu hỏi, tiêu đề, loại câu hỏi
+- Thứ tự hiển thị, bắt buộc hay không
+- Danh sách lựa chọn (với câu hỏi trắc nghiệm / checkbox / dropdown)
+- Liên kết với form
 
----
-
-## Schema dữ liệu
-
-### Bảng `forms`
-
-```sql
-CREATE TABLE forms (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title       TEXT NOT NULL DEFAULT '',
-  description TEXT NOT NULL DEFAULT '',
-  theme_color TEXT NOT NULL DEFAULT '#673ab7',
-  settings    JSONB NOT NULL DEFAULT '{}',
-  created_at  TIMESTAMPTZ DEFAULT now(),
-  updated_at  TIMESTAMPTZ DEFAULT now()
-);
-```
-
-### Bảng `questions`
-
-```sql
-CREATE TABLE questions (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  form_id     UUID REFERENCES forms(id) ON DELETE CASCADE,
-  type        TEXT NOT NULL,  -- 'short_answer' | 'paragraph' | 'multiple_choice' | ...
-  title       TEXT NOT NULL DEFAULT '',
-  required    BOOLEAN DEFAULT false,
-  position    INTEGER NOT NULL DEFAULT 0,
-  options     JSONB DEFAULT '[]'  -- [{ id, text }]
-);
-```
-
-### Bảng `responses` *(giai đoạn 2)*
-
-```sql
-CREATE TABLE responses (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  form_id     UUID REFERENCES forms(id) ON DELETE CASCADE,
-  answers     JSONB NOT NULL,  -- { questionId: value }
-  email       TEXT,
-  submitted_at TIMESTAMPTZ DEFAULT now()
-);
-```
+### Phản hồi (Responses) *(giai đoạn 2)*
+- ID phản hồi, thời gian gửi
+- Email người trả lời (nếu bật thu thập)
+- Nội dung từng câu trả lời theo ID câu hỏi
+- Liên kết với form
 
 ---
 
-## API Contract nội bộ (`src/services/db.ts`)
+## Quan hệ dữ liệu
 
-![API Contract](https://placehold.co/860x160/fff7ed/ff6b35?text=saveForm()+%7C+loadForm()+%7C+listForms()+%7C+deleteForm()+%7C+submitResponse())
 
-```ts
-// Interface thống nhất — Dev A + Dev C cùng định nghĩa
-interface DBAdapter {
-  saveForm(form: FormState): Promise<string>;      // trả về form id
-  loadForm(id: string): Promise<FormState | null>;
-  listForms(): Promise<{ id: string; title: string; updatedAt: string }[]>;
-  deleteForm(id: string): Promise<void>;
-  submitResponse(formId: string, answers: Record<string, unknown>): Promise<void>;
-}
 ```
-
-Cả `LocalStorageAdapter` (hiện tại) và `SupabaseAdapter` (mở rộng) đều implement cùng interface này — component không cần biết nguồn dữ liệu đến từ đâu.
+users
+  └── 1 user có nhiều forms
+        └── 1 form có nhiều questions
+        └── 1 form có nhiều responses
+              └── 1 response có nhiều answers (theo từng question)
+```
 
 ---
 
 ## Chiến lược lưu trữ theo giai đoạn
 
-![Roadmap](https://placehold.co/860x180/e6eef0/0f1724?text=Giai+doan+1%3A+localStorage+%E2%86%92+Giai+doan+2%3A+LocalStorage+%2B+Cloud+Sync+%E2%86%92+Giai+doan+3%3A+Multi-user)
 
 ### Giai đoạn 1 — MVP (hiện tại)
-- Lưu trữ: `localStorage` duy nhất
-- Không cần tài khoản, không cần mạng
-- Export/Import qua file JSON
+- Lưu toàn bộ dữ liệu form trên `localStorage` của trình duyệt
+- Không cần tài khoản, không cần mạng, hoạt động offline hoàn toàn
+- Export / Import form qua file JSON
+- Giới hạn: mất dữ liệu khi xóa cache, không đồng bộ giữa thiết bị
 - **Dev A** phụ trách
 
-### Giai đoạn 2 — Cloud Sync (mở rộng)
-- Lưu trữ: `localStorage` làm cache + Supabase/Firebase làm nguồn chính
-- Sync tự động khi online, fallback localStorage khi offline
-- Mỗi form có URL riêng để chia sẻ
+### Giai đoạn 2 — Tài khoản & Cloud (mở rộng)
+- Thêm tính năng **đăng ký / đăng nhập** (Google OAuth hoặc email)
+- Mỗi tài khoản có danh sách form riêng, lưu trên cloud
+- Mỗi form có URL riêng để chia sẻ và nhận phản hồi
+- `localStorage` vẫn dùng làm cache — fallback khi mất mạng
 - **Dev A + Dev C** phụ trách
 
-### Giai đoạn 3 — Multi-user (tương lai)
-- Authentication (Google OAuth qua Supabase Auth)
-- Mỗi user có danh sách form riêng
-- Realtime collaboration (nhiều người chỉnh sửa cùng lúc)
-- Thu thập và hiển thị phản hồi trong tab "Câu trả lời"
+### Giai đoạn 3 — Multi-user & Analytics (tương lai)
+- Nhiều người cùng chỉnh sửa một form (realtime collaboration)
+- Tab "Câu trả lời" hiển thị thống kê phản hồi thật: biểu đồ, tỉ lệ, xuất CSV
+- Phân quyền: chủ form, cộng tác viên, người xem
+- Thông báo email khi có phản hồi mới
 - **Toàn team** phụ trách
 
 ---
 
-## Nhiệm vụ cụ thể Dev A & Dev C
+## Nhiệm vụ Dev A & Dev C
 
-### Dev A làm
-1. Tách `services/storage.ts` thành `LocalStorageAdapter` implement `DBAdapter`
-2. Expose `getDBAdapter()` — trả về adapter đang dùng (local hoặc remote)
-3. Cập nhật `App.tsx` để dùng adapter thay vì gọi trực tiếp localStorage
-4. Viết unit tests cho `LocalStorageAdapter`
+### Dev A
+1. Tách logic lưu trữ hiện tại thành module độc lập, dễ thay thế sau
+2. Đảm bảo khi chuyển sang backend, `App.tsx` và các component không cần sửa
+3. Xử lý trạng thái offline: cache local, đồng bộ khi có mạng trở lại
+4. Viết tests cho toàn bộ logic lưu/đọc dữ liệu
 
-### Dev C làm
-1. Tạo `services/db.ts` với interface `DBAdapter` và factory `getDBAdapter()`
-2. Implement `SupabaseAdapter` (hoặc adapter tương đương) khi cần mở rộng
-3. Viết `services/sync.ts` — logic đồng bộ: detect online/offline, retry queue
-4. Viết unit tests cho adapter (mock fetch)
+### Dev C
+1. Thiết kế và implement kết nối với database (Supabase hoặc lựa chọn khác)
+2. Xây dựng luồng xác thực người dùng (đăng nhập, đăng xuất, giữ phiên)
+3. Đồng bộ dữ liệu local ↔ remote: phát hiện online/offline, retry khi thất bại
+4. Viết tests cho adapter kết nối database
 
 ### Cùng làm
-- Thống nhất schema bảng dữ liệu (xem phần trên)
-- Thống nhất `DBAdapter` interface trước khi bắt đầu code
-- Review chéo PR của nhau trước khi merge vào `main`
+- Thống nhất danh sách bảng và quan hệ trước khi bắt đầu
+- Review chéo PR trước khi merge vào `main`
+- Đảm bảo không có thông tin nhạy cảm (API key, mật khẩu) trong code
 
 ---
 
 ## Tiêu chí nghiệm thu
 
-- [ ] `LocalStorageAdapter` pass toàn bộ unit tests
-- [ ] Đổi adapter không ảnh hưởng đến `App.tsx` và các component
-- [ ] Khi mất mạng, app vẫn hoạt động bình thường với localStorage fallback
-- [ ] Schema SQL được review và approve bởi cả Dev A + Dev C
+- [ ] Giai đoạn 1: lưu/đọc form từ localStorage hoạt động ổn định, không mất dữ liệu khi reload
+- [ ] Giai đoạn 2: đăng nhập thành công, form được lưu lên cloud và load lại đúng trên thiết bị khác
+- [ ] Giai đoạn 2: mất mạng → app vẫn dùng được, có mạng → tự đồng bộ
+- [ ] Giai đoạn 3: nhiều phản hồi được ghi nhận và hiển thị đúng trong tab Câu trả lời
 
 ## Ghi chú
 
-- **Không commit** connection string hay API key vào repo — dùng `.env` và thêm vào `.gitignore`
-- Giai đoạn 1 (localStorage) phải hoàn thành trước khi bắt đầu Giai đoạn 2
-- Mọi thay đổi schema phải có migration script đi kèm
+- Không commit API key hay connection string — lưu trong `.env` và thêm vào `.gitignore`
+- Giai đoạn 1 phải hoàn thành và ổn định trước khi bắt đầu Giai đoạn 2
+- Mọi thay đổi cấu trúc dữ liệu cần thông báo cho toàn team vì ảnh hưởng đến tất cả các Dev
