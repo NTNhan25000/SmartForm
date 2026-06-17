@@ -4,6 +4,8 @@
 
 ---
 
+![State Flow](https://placehold.co/860x320/0ea5a4/white?text=State+%26+Action+Dispatcher+Flow)
+
 ## Vai trò
 
 Quản lý state toàn cục, action dispatcher, và persistence cho form.
@@ -39,6 +41,8 @@ Quản lý state toàn cục, action dispatcher, và persistence cho form.
 ### 🗂 Quản lý state toàn cục
 Toàn bộ dữ liệu form (`title`, `description`, `questions[]`, `settings`) được lưu trong một state duy nhất ở `App.tsx` và truyền xuống các component qua props. Không dùng thư viện state management ngoài — chỉ dùng `useState` + `useReducer`.
 
+![Action Flow](https://placehold.co/860x200/0b8f89/white?text=applyAction+%E2%86%92+addQuestion+%7C+updateQuestion+%7C+deleteQuestion+%7C+moveQuestion)
+
 ### ⚡ Action dispatcher
 Hàm `applyAction(action: FormAction)` là trung tâm xử lý mọi thay đổi của form. Các helper thuần túy:
 - `addQuestion(questions, newQ)` — thêm câu hỏi vào cuối danh sách
@@ -46,8 +50,12 @@ Hàm `applyAction(action: FormAction)` là trung tâm xử lý mọi thay đổi
 - `deleteQuestion(questions, id)` — xóa câu hỏi theo id
 - `moveQuestion(questions, id, direction)` — đổi vị trí câu hỏi lên/xuống
 
+![Undo Redo](https://placehold.co/860x160/f2fbfa/0ea5a4?text=Undo+Stack+%E2%86%90+snapshot+%5B0%5D+...+snapshot+%5B49%5D+%E2%86%92+Redo+Stack)
+
 ### ↩️ Undo / Redo
 Mỗi khi `applyAction` được gọi, snapshot state hiện tại được đẩy vào stack lịch sử (tối đa 50 bước). `Ctrl+Z` lấy snapshot trước đó, `Ctrl+Shift+Z` lấy snapshot kế tiếp. Hoạt động với mọi loại `FormAction` bao gồm cả thay đổi tiêu đề, theme, và cài đặt.
+
+![LocalStorage](https://placehold.co/860x160/fff7ed/ff6b35?text=saveForm()+%7C+loadForm()+%7C+clearForm()+%E2%80%94+Auto-save+debounce+500ms)
 
 ### 💾 Lưu trữ localStorage
 `services/storage.ts` cung cấp 3 hàm:

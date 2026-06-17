@@ -4,6 +4,8 @@
 
 ---
 
+![CI/CD Overview](https://placehold.co/860x200/0f1724/white?text=CI+Pipeline%3A+Push+%2F+PR+%E2%86%92+tsc+%E2%86%92+Unit+Tests+%E2%86%92+Build)
+
 ## Vai trò
 
 Thiết lập CI/CD, viết E2E tests, và quản lý toàn bộ tài liệu developer.
@@ -60,6 +62,9 @@ jobs:
 3 bước theo thứ tự, fail sớm — nếu tsc lỗi thì không chạy tiếp test và build.
 
 ### 🧪 E2E Tests (Cypress)
+
+![E2E Flow](https://placehold.co/860x140/f2fbfa/0ea5a4?text=Them+cau+hoi+%E2%86%92+Nhap+noi+dung+%E2%86%92+Preview+%E2%86%92+Export+JSON+%E2%86%92+Pass)
+
 Kiểm tra luồng sử dụng chính của ứng dụng:
 
 ```
@@ -97,6 +102,9 @@ File `.github/pull_request_template.md` tự động điền vào ô mô tả kh
 ```
 
 ### ✅ QA Checklist thủ công
+
+![QA Checklist](https://placehold.co/860x140/fff7ed/ff6b35?text=QA+truoc+release%3A+8+loai+cau+hoi+%7C+Undo%2FRedo+%7C+AI+%7C+Theme+%7C+Export%2FImport)
+
 Danh sách kiểm tra trong `docs/qa-checklist.md` trước mỗi release:
 - Tạo form mới, thêm đủ 8 loại câu hỏi, lưu và reload → dữ liệu còn nguyên
 - Undo/Redo hoạt động đúng cho mọi thao tác

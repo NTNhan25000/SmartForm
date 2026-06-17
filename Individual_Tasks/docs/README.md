@@ -4,6 +4,18 @@
 
 ---
 
+![App Overview](https://placehold.co/860x400/0ea5a4/white?text=GG+Form+%E2%80%94+Form+Builder+%2B+AI+Assistant)
+
+| Giao diện Editor | AI Chatbox | Xem trước |
+|:---:|:---:|:---:|
+| ![Editor](https://placehold.co/260x180/f2fbfa/0b8f89?text=Form+Editor) | ![AI](https://placehold.co/260x180/673ab7/white?text=AI+Chatbox) | ![Preview](https://placehold.co/260x180/fff7ed/ff6b35?text=Preview+Mode) |
+
+| Chọn Theme | Chia sẻ |
+|:---:|:---:|
+| ![Theme](https://placehold.co/380x180/e6eef0/0ea5a4?text=Theme+Picker) | ![Share](https://placehold.co/380x180/0f1724/white?text=Share+Modal) |
+
+---
+
 ## 🗂 Phân công team
 
 | Dev | Vai trò | File |

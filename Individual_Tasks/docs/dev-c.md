@@ -4,6 +4,8 @@
 
 ---
 
+![AI Chatbox](https://placehold.co/860x380/673ab7/white?text=AI+Assistant+%E2%80%94+Chatbox+%2B+Quick+Actions+%2B+Typing+Animation)
+
 ## Vai trò
 
 Xây dựng AI assistant nội bộ (rule-based, offline) và các service dùng chung.
@@ -49,6 +51,9 @@ Xây dựng AI assistant nội bộ (rule-based, offline) và các service dùng
 ## Chức năng chính phát triển
 
 ### 🤖 `chatWithAI()` — Parser rule-based
+
+![Parser Flow](https://placehold.co/860x180/f3e8ff/673ab7?text=Input+%E2%86%92+Regex+Parser+%E2%86%92+FormAction%5B%5D+%2B+message)
+
 Hàm nhận vào chuỗi lệnh tiếng Việt từ người dùng, phân tích theo các pattern regex/keyword, rồi trả về:
 ```ts
 interface AIResponse {
@@ -60,6 +65,9 @@ interface AIResponse {
 Logic xử lý theo thứ tự ưu tiên: lệnh tạo biểu mẫu mẫu → lệnh sửa đơn lẻ → lệnh gợi ý → fallback trả về tips chung.
 
 ### 💬 Giao diện Chatbox (AIChatBox)
+
+![Chatbox UI](https://placehold.co/400x500/673ab7/white?text=AI+Chatbox%0A%E2%80%94%0AGoi+y+%7C+Bieu+mau+mau%0ACai+thien%0A%0A...+Typing)
+
 Component nổi ở góc dưới bên phải màn hình:
 - Nút mở/đóng với icon ✨, có badge khi có gợi ý mới
 - Khung chat hiển thị lịch sử tin nhắn (người dùng + AI), cuộn tự động xuống cuối
@@ -68,6 +76,9 @@ Component nổi ở góc dưới bên phải màn hình:
 - **Quick action buttons**: 3 nút tắt — "💡 Gợi ý", "📋 Biểu mẫu mẫu", "✨ Cải thiện"
 
 ### 📋 Tạo biểu mẫu mẫu
+
+![Template Generation](https://placehold.co/860x200/fff7ed/ff6b35?text=Lenh%3A+tao+bieu+mau+khao+sat+%E2%86%92+5+cau+hoi+mau+%E2%86%92+Them+tat+ca)
+
 Khi nhận lệnh như `"tạo biểu mẫu khảo sát"`, AI sinh ra một bộ câu hỏi mẫu hoàn chỉnh và trả về dưới dạng danh sách gợi ý. Người dùng có thể:
 - Nhấn **"Thêm tất cả"** → thêm toàn bộ câu hỏi vào form cùng lúc
 - Nhấn **"➕"** bên cạnh từng câu → thêm riêng lẻ từng câu một
