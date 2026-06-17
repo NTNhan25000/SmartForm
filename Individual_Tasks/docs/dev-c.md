@@ -1,18 +1,19 @@
-# Dev C — AI & Services
+# Dev C — AI Assistant & Dịch vụ
 
-[← Dev B](./dev-b.md) · [Docs index](./README.md) · [Dev D →](./dev-d.md)
+[← Dev B](./dev-b.md) · [Mục lục tài liệu](./README.md) · [Dev D →](./dev-d.md)
 
 ---
 
 ## Vai trò
 
-Implement local AI adapter (rule-based, offline) và các service nội bộ.
+Xây dựng AI assistant nội bộ (rule-based, offline) và các service dùng chung.
 
-## Deliverables
+## Sản phẩm bàn giao
 
-| File | Mô tả |
-|------|-------|
+| Tệp | Mô tả |
+|-----|-------|
 | `src/services/ai.ts` | Rule-based AI — không gọi API ngoài |
+| `src/components/AIChatBox.tsx` | Giao diện chatbox góc dưới phải |
 | `src/__tests__/ai.test.ts` | Unit tests cho parser và autonomous runner |
 | `docs/ai-commands.md` | Danh sách lệnh tiếng Việt được hỗ trợ |
 
@@ -32,8 +33,11 @@ Implement local AI adapter (rule-based, offline) và các service nội bộ.
 | `"đổi tiêu đề thành X"` | `set_title` |
 | `"thêm lựa chọn A"` | `update_question` (thêm option) |
 | `"đánh dấu bắt buộc"` | `update_question` (required: true) |
+| `"tạo biểu mẫu khảo sát"` | nhiều `add_question` (satisfaction survey) |
+| `"tạo biểu mẫu đăng ký sự kiện"` | nhiều `add_question` (event registration) |
+| `"tạo biểu mẫu phản hồi sản phẩm"` | nhiều `add_question` (product feedback) |
 
-## Acceptance Criteria
+## Tiêu chí nghiệm thu
 
 - [ ] AI không gọi bất kỳ external API nào.
 - [ ] Parser trả về `FormAction[]` chính xác cho tất cả lệnh mẫu ở bảng trên.
@@ -44,12 +48,38 @@ Implement local AI adapter (rule-based, offline) và các service nội bộ.
 
 ## Chức năng chính phát triển
 
-- **`chatWithAI()`** — nhận lệnh tiếng Việt, trả về `FormAction[]` và message phản hồi
-- **Chatbox UI** — giao diện chat góc dưới phải, typing animation, quick action buttons (Gợi ý / Biểu mẫu mẫu / Cải thiện)
-- **Rule-based parser** — xử lý các lệnh: thêm câu hỏi, xóa, đổi tiêu đề, thêm lựa chọn, đánh dấu bắt buộc
-- **Tạo biểu mẫu mẫu** — 1 lệnh sinh ra toàn bộ form mẫu (khảo sát / đăng ký sự kiện / phản hồi sản phẩm)
-- **Autonomous mode** — `startAutonomousAI(onActions, intervalMs)` phát action định kỳ khi bật, dừng được khi unmount
-- **Thêm từng câu / tất cả** — UI cho phép chọn thêm riêng lẻ hoặc đồng loạt từ gợi ý AI
+### 🤖 `chatWithAI()` — Parser rule-based
+Hàm nhận vào chuỗi lệnh tiếng Việt từ người dùng, phân tích theo các pattern regex/keyword, rồi trả về:
+```ts
+interface AIResponse {
+  message: string;       // phản hồi hiển thị trong chatbox
+  actions: FormAction[]; // danh sách action áp dụng lên form
+  suggestions?: string[]; // gợi ý câu hỏi bổ sung (nếu có)
+}
+```
+Logic xử lý theo thứ tự ưu tiên: lệnh tạo biểu mẫu mẫu → lệnh sửa đơn lẻ → lệnh gợi ý → fallback trả về tips chung.
+
+### 💬 Giao diện Chatbox (AIChatBox)
+Component nổi ở góc dưới bên phải màn hình:
+- Nút mở/đóng với icon ✨, có badge khi có gợi ý mới
+- Khung chat hiển thị lịch sử tin nhắn (người dùng + AI), cuộn tự động xuống cuối
+- **Typing animation** — hiệu ứng "..." khi AI đang "suy nghĩ" (delay giả 800ms)
+- Input nhập lệnh + nút Gửi, hỗ trợ `Enter` để gửi
+- **Quick action buttons**: 3 nút tắt — "💡 Gợi ý", "📋 Biểu mẫu mẫu", "✨ Cải thiện"
+
+### 📋 Tạo biểu mẫu mẫu
+Khi nhận lệnh như `"tạo biểu mẫu khảo sát"`, AI sinh ra một bộ câu hỏi mẫu hoàn chỉnh và trả về dưới dạng danh sách gợi ý. Người dùng có thể:
+- Nhấn **"Thêm tất cả"** → thêm toàn bộ câu hỏi vào form cùng lúc
+- Nhấn **"➕"** bên cạnh từng câu → thêm riêng lẻ từng câu một
+
+### 💡 Gợi ý câu hỏi thông minh
+Dựa trên tiêu đề form hiện tại, AI đề xuất 3–5 câu hỏi phù hợp với chủ đề. Ví dụ form tiêu đề "Khảo sát nhân viên" → gợi ý các câu hỏi về mức độ hài lòng, môi trường làm việc, phúc lợi...
+
+### 🔄 Chế độ Autonomous (tự động)
+- `startAutonomousAI(onActions, intervalMs)` — chạy background, cứ mỗi `intervalMs` ms phát ra 1 `FormAction` gợi ý
+- `stopAutonomousAI()` — dừng interval, gọi khi component unmount
+- Chỉ bật khi người dùng chủ động kích hoạt, mặc định tắt
+- Safeguard: chỉ emit tối đa 1 action/interval, không emit khi form đang được chỉnh sửa
 
 ## Ghi chú
 

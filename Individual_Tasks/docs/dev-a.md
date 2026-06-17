@@ -1,6 +1,6 @@
-# Dev A — Frontend Core & State
+# Dev A — Lõi Frontend & Quản lý State
 
-[← Docs index](./README.md) · [Dev B →](./dev-b.md)
+[← Mục lục tài liệu](./README.md) · [Dev B →](./dev-b.md)
 
 ---
 
@@ -8,10 +8,10 @@
 
 Quản lý state toàn cục, action dispatcher, và persistence cho form.
 
-## Deliverables
+## Sản phẩm bàn giao
 
-| File | Mô tả |
-|------|-------|
+| Tệp | Mô tả |
+|-----|-------|
 | `src/App.tsx` | State + action dispatcher hoàn chỉnh |
 | `src/types.ts` | Interfaces: `Form`, `Question`, `FormAction` |
 | `src/services/storage.ts` | `saveForm()`, `loadForm()`, `clearForm()` |
@@ -25,7 +25,7 @@ Quản lý state toàn cục, action dispatcher, và persistence cho form.
 4. Kết nối AI action executor với dispatcher.
 5. Viết unit tests (happy path + edge cases).
 
-## Acceptance Criteria
+## Tiêu chí nghiệm thu
 
 - [ ] Mọi action cập nhật UI ngay lập tức và persist vào `localStorage`.
 - [ ] Load form phục hồi đầy đủ trạng thái editor và preview.
@@ -36,12 +36,33 @@ Quản lý state toàn cục, action dispatcher, và persistence cho form.
 
 ## Chức năng chính phát triển
 
-- **State toàn cục** — quản lý `form.title`, `form.description`, `form.questions[]`, `form.settings` trong `App.tsx`
-- **Action dispatcher** — `applyAction(action: FormAction)` xử lý add / update / delete / move question
-- **Undo / Redo** — lưu lịch sử 50 bước, hoạt động với mọi `FormAction`
-- **localStorage persistence** — `saveForm()` / `loadForm()` / `clearForm()` trong `services/storage.ts`
-- **Export / Import JSON** — serialize form state ra file `.json` và parse ngược lại
-- **Kết nối AI** — nhận `FormAction[]` từ AI service và đưa vào dispatcher
+### 🗂 Quản lý state toàn cục
+Toàn bộ dữ liệu form (`title`, `description`, `questions[]`, `settings`) được lưu trong một state duy nhất ở `App.tsx` và truyền xuống các component qua props. Không dùng thư viện state management ngoài — chỉ dùng `useState` + `useReducer`.
+
+### ⚡ Action dispatcher
+Hàm `applyAction(action: FormAction)` là trung tâm xử lý mọi thay đổi của form. Các helper thuần túy:
+- `addQuestion(questions, newQ)` — thêm câu hỏi vào cuối danh sách
+- `updateQuestion(questions, id, changes)` — cập nhật một trường bất kỳ của câu hỏi
+- `deleteQuestion(questions, id)` — xóa câu hỏi theo id
+- `moveQuestion(questions, id, direction)` — đổi vị trí câu hỏi lên/xuống
+
+### ↩️ Undo / Redo
+Mỗi khi `applyAction` được gọi, snapshot state hiện tại được đẩy vào stack lịch sử (tối đa 50 bước). `Ctrl+Z` lấy snapshot trước đó, `Ctrl+Shift+Z` lấy snapshot kế tiếp. Hoạt động với mọi loại `FormAction` bao gồm cả thay đổi tiêu đề, theme, và cài đặt.
+
+### 💾 Lưu trữ localStorage
+`services/storage.ts` cung cấp 3 hàm:
+- `saveForm(form)` — serialize form state thành JSON và ghi vào `localStorage`
+- `loadForm()` — đọc và parse lại, trả về `Form | null`
+- `clearForm()` — xóa dữ liệu đã lưu
+
+Auto-save được kích hoạt mỗi khi state thay đổi (debounce 500ms), hiển thị trạng thái "Đang lưu..." / "✓ Đã lưu" trên TopBar.
+
+### 📤 Export / Import JSON
+- **Export**: `JSON.stringify(form, null, 2)` → tạo Blob → trigger download file `.json`
+- **Import**: đọc file `.json` từ input, parse, validate schema cơ bản rồi load vào state
+
+### 🤖 Kết nối AI
+Khi `AIChatBox` gọi `chatWithAI()` và nhận về `FormAction[]`, mảng action này được đưa thẳng vào `applyAction` theo thứ tự. Đảm bảo mỗi action từ AI cũng được ghi vào lịch sử undo/redo.
 
 ## Ghi chú
 

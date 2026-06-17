@@ -1,6 +1,6 @@
-# Dev B — Components & UI/UX
+# Dev B — Component & Giao diện người dùng
 
-[← Dev A](./dev-a.md) · [Docs index](./README.md) · [Dev C →](./dev-c.md)
+[← Dev A](./dev-a.md) · [Mục lục tài liệu](./README.md) · [Dev C →](./dev-c.md)
 
 ---
 
@@ -8,16 +8,16 @@
 
 Thiết kế và hoàn thiện các UI component chính, layout split editor/preview.
 
-## Deliverables
+## Sản phẩm bàn giao
 
-| File | Mô tả |
-|------|-------|
-| `src/components/QuestionCard.tsx` | Edit interactions, keyboard focus states |
-| `src/components/PreviewPane.tsx` | Read-only form render (mới) |
-| `src/components/TopBar.tsx` | Tabs, undo/redo, menu |
-| `src/components/Sidebar.tsx` | Thêm câu hỏi nhanh |
-| `src/components/ShareModal.tsx` | Link / Email / Embed |
-| `src/__tests__/components/` | Component tests (RTL) |
+| Tệp | Mô tả |
+|-----|-------|
+| `src/components/QuestionCard.tsx` | Card chỉnh sửa câu hỏi |
+| `src/components/PreviewPane.tsx` | Bảng xem trước read-only (mới) |
+| `src/components/TopBar.tsx` | Thanh tiêu đề: tabs, undo/redo, menu |
+| `src/components/Sidebar.tsx` | Thanh công cụ thêm câu hỏi nhanh |
+| `src/components/ShareModal.tsx` | Modal chia sẻ: liên kết / email / nhúng |
+| `src/__tests__/components/` | Component tests (React Testing Library) |
 
 ## Nhiệm vụ
 
@@ -27,7 +27,7 @@ Thiết kế và hoàn thiện các UI component chính, layout split editor/pre
 4. Đảm bảo preview đồng bộ realtime khi editor thay đổi.
 5. Viết component tests với React Testing Library.
 
-## Acceptance Criteria
+## Tiêu chí nghiệm thu
 
 - [ ] Tất cả components hoạt động bằng bàn phím (Tab, Enter, Arrow keys).
 - [ ] Preview cập nhật ngay khi chỉnh sửa, không cần reload.
@@ -38,12 +38,50 @@ Thiết kế và hoàn thiện các UI component chính, layout split editor/pre
 
 ## Chức năng chính phát triển
 
-- **QuestionCard** — tạo / sửa tiêu đề, đổi loại câu hỏi, thêm/xóa lựa chọn cho trắc nghiệm
-- **PreviewPane** — render read-only form đúng như người trả lời thấy (radio, checkbox, dropdown, date, time)
-- **TopBar** — tabs (Điều chỉnh / Câu trả lời / Cài đặt), nút undo/redo, menu gử & xuất
-- **Sidebar** — thanh công cụ bên phải: thêm nhanh từng loại câu hỏi
-- **ShareModal** — 3 tab: Liên kết (copy + mạng xã hội) / Email / Nhúng (`<iframe>`)
-- **Split layout** — editor trái / preview phải, đồng bộ realtime, responsive ≥ 768px
+### 🃏 QuestionCard
+Mỗi câu hỏi hiển thị trong một card riêng. Người dùng có thể:
+- Nhập / sửa tiêu đề câu hỏi trực tiếp (contenteditable hoặc input)
+- Chọn loại câu hỏi từ dropdown (8 loại: ngắn, đoạn, trắc nghiệm, checkbox, dropdown, thang, ngày, giờ)
+- Thêm / xóa / sửa các lựa chọn cho câu hỏi dạng trắc nghiệm, checkbox, dropdown
+- Bật/tắt "Bắt buộc" bằng toggle
+- Nhân đôi hoặc xóa câu hỏi qua icon button
+- Di chuyển lên/xuống bằng nút mũi tên hoặc phím `Alt + ↑ / ↓`
+- Câu hỏi được đánh số thứ tự tự động
+
+### 👁 PreviewPane
+Render form ở chế độ read-only, phản ánh đúng state hiện tại của editor:
+- Câu hỏi ngắn / đoạn văn: `<input>` / `<textarea>` hoạt động thật
+- Trắc nghiệm: `<input type="radio">` nhóm theo câu hỏi
+- Checkbox: `<input type="checkbox">`
+- Dropdown: `<select>` với các lựa chọn
+- Ngày / Giờ: `<input type="date">` / `<input type="time">`
+- Hiển thị dấu `*` đỏ cho câu hỏi bắt buộc
+- Nút "Gửi" → trang xác nhận với thông báo tùy chỉnh từ settings
+
+### 🔝 TopBar
+Thanh tiêu đề cố định ở trên cùng, gồm:
+- 3 tab: **Điều chỉnh** / **Câu trả lời** / **Cài đặt**
+- Nút Undo (`Ctrl+Z`) và Redo (`Ctrl+Shift+Z`) với icon và trạng thái disabled khi không có lịch sử
+- Trạng thái auto-save: "Đang lưu..." / "✓ Đã lưu"
+- Menu: nút **Gửi** (mở ShareModal), **Xem trước** (`👁`), **Tùy chỉnh theme** (`🎨`)
+- Nút **?** mở bảng phím tắt
+
+### 📌 Sidebar
+Thanh công cụ cố định bên phải, cho phép thêm nhanh câu hỏi theo loại:
+- 8 nút tương ứng 8 loại câu hỏi, mỗi nút có icon và tooltip
+- Nhấn vào bất kỳ nút nào → thêm câu hỏi loại đó vào cuối form và scroll đến câu vừa thêm
+
+### 🔗 ShareModal
+Modal chia sẻ với 3 tab:
+- **Liên kết**: hiển thị URL, nút sao chép, nút chia sẻ lên Facebook / Twitter / email
+- **Email**: nhập danh sách email, nút gửi
+- **Nhúng**: hiển thị `<iframe>` embed code, nút sao chép
+
+### 📐 Split layout
+- Màn hình chia đôi: editor bên trái, preview bên phải
+- Preview đồng bộ realtime — không cần nhấn nút refresh
+- Responsive: dưới 768px chỉ hiển thị editor, có nút toggle để xem preview
+- (Optional) Thanh kéo giữa để điều chỉnh tỉ lệ, lưu vào `localStorage`
 
 ## Ghi chú
 
