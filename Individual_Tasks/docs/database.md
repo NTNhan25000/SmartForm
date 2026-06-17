@@ -4,8 +4,6 @@
 
 ---
 
-![Database Overview](https://placehold.co/860x220/0f1724/white?text=Storage+Layer%3A+localStorage+(hien+tai)+%E2%86%92+Backend+DB+(mo+rong))
-
 ## Phân công
 
 > **Dev A + Dev C** phối hợp thực hiện phần này.
@@ -26,7 +24,6 @@ Lý do kết hợp:
 
 ## Hiện trạng — localStorage (MVP)
 
-![LocalStorage Flow](https://placehold.co/860x160/f2fbfa/0b8f89?text=FormState+%E2%86%92+JSON.stringify+%E2%86%92+localStorage+%E2%86%92+JSON.parse+%E2%86%92+FormState)
 
 Toàn bộ dữ liệu form được lưu trên trình duyệt của người dùng:
 
@@ -41,8 +38,6 @@ Giới hạn: mất khi xóa cache, không chia sẻ giữa thiết bị, không
 ---
 
 ## Mở rộng — Database thật (Backend)
-
-![Backend Flow](https://placehold.co/860x200/0ea5a4/white?text=React+App+%E2%86%92+REST+API+%2F+Supabase+%E2%86%92+PostgreSQL)
 
 ### Lựa chọn công nghệ gợi ý
 
@@ -101,8 +96,6 @@ CREATE TABLE responses (
 
 ## API Contract nội bộ (`src/services/db.ts`)
 
-![API Contract](https://placehold.co/860x160/fff7ed/ff6b35?text=saveForm()+%7C+loadForm()+%7C+listForms()+%7C+deleteForm()+%7C+submitResponse())
-
 ```ts
 // Interface thống nhất — Dev A + Dev C cùng định nghĩa
 interface DBAdapter {
@@ -119,8 +112,6 @@ Cả `LocalStorageAdapter` (hiện tại) và `SupabaseAdapter` (mở rộng) đ
 ---
 
 ## Chiến lược lưu trữ theo giai đoạn
-
-![Roadmap](https://placehold.co/860x180/e6eef0/0f1724?text=Giai+doan+1%3A+localStorage+%E2%86%92+Giai+doan+2%3A+LocalStorage+%2B+Cloud+Sync+%E2%86%92+Giai+doan+3%3A+Multi-user)
 
 ### Giai đoạn 1 — MVP (hiện tại)
 - Lưu trữ: `localStorage` duy nhất
